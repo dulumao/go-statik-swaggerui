@@ -1,4 +1,4 @@
-package main
+package swaggerui
 
 import (
 	"encoding/json"
