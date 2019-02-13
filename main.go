@@ -24,7 +24,7 @@ func NewSwaggerUI(host string, basePath string, swaggerFile string) *SwaggerUI {
 }
 
 func (this *SwaggerUI) SetupGin(r *gin.RouterGroup, urlPrefix string, swaggerUi bool) {
-	r.GET(urlPrefix+"/api-docs", this.getSwaggerFile)
+	r.GET(urlPrefix+"/api-docs/swagger.json", this.getSwaggerFile)
 	if swaggerUi {
 		statikFS, err := fs.New()
 		if err != nil {
@@ -58,5 +58,9 @@ func (this *SwaggerUI) prepareSwagger() {
 }
 
 func (this *SwaggerUI) getSwaggerFile(c *gin.Context) {
+	if len(this.swaggerData) == 0 {
+		this.prepareSwagger()
+	}
+
 	c.Data(200, "application/json; charset=utf-8", this.swaggerData)
 }
